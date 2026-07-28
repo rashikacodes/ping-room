@@ -1,18 +1,18 @@
 "use client";
 import { use, useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
-import { Message } from "@/types/message";
+import { ChatItem,Message } from "@/types/message";
 
 export default function ChatRoom({params,}: {params: Promise<{ roomCode: string }>;
 }) {
   const { roomCode } = use(params);
-  const [messages,setMessages]= useState<Message[]>([]);
+  const [messages,setMessages]= useState<ChatItem[]>([]);
   const [messageInput, setMessageInput] = useState("");
   const [myUsername, setMyUsername] = useState("");
   
   useEffect(()=>{
     const handleReceiveMessage = (payload: Message) => {
-      setMessages((prev) => [...prev, payload]);
+       setMessages((prev) => [...prev, { ...payload, type: "message" }]);
     };
     socket.on("receive-message", handleReceiveMessage);
     return () => {
