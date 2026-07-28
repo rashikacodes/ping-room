@@ -3,3 +3,13 @@ export type Message = {
   message: string;
   timestamp: number;
 };
+
+export type SystemMessage = {
+  type: "system";
+  text: string;
+  timestamp: number;
+};
+
+export type ChatItem = 
+  | (Message & { type: "message" })
+  | SystemMessage;
