@@ -68,7 +68,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-950 flex items-center justify-center px-6">
+    <main className="min-h-screen bg-linear-to-br from-slate-900 via-indigo-900 to-slate-950 flex items-center justify-center px-6">
       <div className="w-full max-w-md rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 shadow-2xl">
 
         <h1 className="text-5xl font-extrabold text-center text-white">

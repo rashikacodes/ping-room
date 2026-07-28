@@ -135,6 +135,7 @@ io.on("connection", (socket) => {
     });
   }
 });
+});
 
 const PORT = 4000;
 
