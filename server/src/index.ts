@@ -32,13 +32,6 @@ function generateRoomCode(): string {
 
   return roomCode;
 }
-
-app.get("/health", (req, res) => {
-  res.json({
-    status: "OK",
-  });
-});
-
 io.on("connection", (socket) => {
   console.log(`✅ Client connected: ${socket.id}`);
 
@@ -86,6 +79,26 @@ io.on("connection", (socket) => {
       console.log(`${username} joined room ${roomCode}`);
     }
   );
+
+  socket.on("send-message",({roomCode,message}:{roomCode:string, message:string})=>{
+       roomCode = roomCode.trim().toUpperCase();
+      const room = rooms.get(roomCode);
+      if (!room) {
+      return;
+      }
+
+      const username = room.users.get(socket.id);
+      if(!username){
+      return;
+      }
+      const payload = {
+        username,
+        message,
+        timestamp: Date.now(),
+      };
+      io.to(roomCode).emit("receive-message", payload);
+  
+  });
 
   socket.on("disconnect", () => {
     console.log(`❌ Client disconnected: ${socket.id}`);

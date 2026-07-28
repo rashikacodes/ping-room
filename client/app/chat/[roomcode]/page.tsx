@@ -4,8 +4,8 @@ import { use } from "react";
 export default function ChatRoom({
   params,
 }: {
-  params: Promise<{ roomcode: string }>;
+  params: Promise<{ roomCode: string }>;
 }) {
-  const { roomcode } = use(params);
-  return <div className="text-white p-8">You're in room: {roomcode}</div>;
+  const { roomCode } = use(params);
+  return <div className="text-white p-8">You're in room: {roomCode}</div>;
 }
