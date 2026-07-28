@@ -42,9 +42,9 @@ export default function Home() {
     }
 
     setError("");
-
+    
     if (!socket.connected) socket.connect();
-
+    sessionStorage.setItem("username", username.trim());
     socket.emit("create-room", {
       username: username.trim(),
     });
@@ -59,7 +59,7 @@ export default function Home() {
     setError("");
 
     if (!socket.connected) socket.connect();
-
+      sessionStorage.setItem("username", username.trim());
     socket.emit("join-room", {
       username: username.trim(),
       roomCode: roomCode.trim().toUpperCase(),
