@@ -51,9 +51,11 @@ io.on("connection", (socket) => {
     rooms.set(roomCode, roomData);
 
     socket.join(roomCode);
+    socket.data.roomCode = roomCode; 
 
     socket.emit("room-created", {
         roomCode,
+        onlineUsers: Array.from(roomData.users.values()),
     });
 });
 
@@ -71,23 +73,28 @@ io.on("connection", (socket) => {
       room.users.set(socket.id, username);
 
       socket.join(roomCode);
-
+      const onlineUsers = Array.from(room.users.values());
+      socket.data.roomCode = roomCode; 
+      socket.to(roomCode).emit("user-joined", { username, onlineUsers })
       socket.emit("room-joined", {
         roomCode,
+        onlineUsers,
       });
 
       console.log(`${username} joined room ${roomCode}`);
     }
   );
-
+  
   socket.on("send-message",({roomCode,message}:{roomCode:string, message:string})=>{
        roomCode = roomCode.trim().toUpperCase();
       const room = rooms.get(roomCode);
+  
       if (!room) {
       return;
       }
 
       const username = room.users.get(socket.id);
+       
       if(!username){
       return;
       }
@@ -100,13 +107,33 @@ io.on("connection", (socket) => {
   
   });
 
-  socket.on("disconnect", () => {
-    console.log(`❌ Client disconnected: ${socket.id}`);
+ socket.on("disconnect", () => {
+  console.log(`❌ Client disconnected: ${socket.id}`);
 
-    // Phase 6:
-    // Remove the user from the room
-    // Delete room if empty
-  });
+  const roomCode = socket.data.roomCode;
+
+  if (!roomCode) return;
+
+  const room = rooms.get(roomCode);
+
+  if (!room) return;
+
+  const username = room.users.get(socket.id);
+
+  room.users.delete(socket.id);
+
+  if (room.users.size === 0) {
+    rooms.delete(roomCode);
+
+    console.log(`🗑️ Room ${roomCode} deleted`);
+  } else {
+    const onlineUsers = Array.from(room.users.values());
+
+    socket.to(roomCode).emit("user-left", {
+      username,
+      onlineUsers,
+    });
+  }
 });
 
 const PORT = 4000;
