@@ -67,24 +67,29 @@ export default function ChatRoom({params,}: {params: Promise<{ roomCode: string 
           </p>
         )}
 
-       {messages.map((msg, index) => {
-  const isMine = msg.username === myUsername;
+      {messages.map((item, index) => {
+        if (item.type === "system") {
+          return (
+            <div key={index} className="text-center text-slate-500 text-sm italic">
+              {item.text}
+            </div>
+          );
+        }
+
+  // TypeScript now knows item is the Message variant here
+  const isMine = item.username === myUsername;
   return (
     <div key={index} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
-      <div
-        className={`rounded-xl p-4 max-w-[70%] ${
-          isMine
-            ? "bg-indigo-600"
-            : "bg-slate-900 border border-slate-700"
-        }`}
-      >
+      <div className={`rounded-xl p-4 max-w-[70%] ${
+        isMine ? "bg-indigo-600" : "bg-slate-900 border border-slate-700"
+      }`}>
         <div className="flex justify-between items-center gap-4">
-          <span className="font-semibold text-indigo-200">{msg.username}</span>
+          <span className="font-semibold text-indigo-200">{item.username}</span>
           <span className="text-xs text-slate-300">
-            {new Date(msg.timestamp).toLocaleTimeString()}
+            {new Date(item.timestamp).toLocaleTimeString()}
           </span>
         </div>
-        <p className="text-white mt-2">{msg.message}</p>
+        <p className="text-white mt-2">{item.message}</p>
       </div>
     </div>
   );
