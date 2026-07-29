@@ -97,43 +97,94 @@ export default function ChatRoom({params,}: {params: Promise<{ roomCode: string 
   </button>
 </div>
       </div>
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+    <div className="flex flex-1 overflow-hidden">
 
-        {messages.length === 0 && (
-          <p className="text-center text-slate-500 mt-20">
-            No messages yet...
-          </p>
-        )}
+  {/* Sidebar */}
+  <div className="w-56 border-r border-slate-800 p-4 overflow-y-auto bg-slate-950">
+    <h2 className="text-slate-400 text-sm font-semibold uppercase mb-4">
+      Online ({onlineUsers.length})
+    </h2>
 
-      {messages.map((item, index) => {
-        if (item.type === "system") {
-          return (
-            <div key={index} className="text-center text-slate-500 text-sm italic">
-              {item.text}
-            </div>
-          );
-        }
+    <ul className="space-y-3">
+      {onlineUsers.map((user, index) => (
+        <li
+          key={index}
+          className="flex items-center gap-2 text-white"
+        >
+          <span className="w-2 h-2 rounded-full bg-green-500"></span>
 
-  // TypeScript now knows item is the Message variant here
-  const isMine = item.username === myUsername;
-  return (
-    <div key={index} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
-      <div className={`rounded-xl p-4 max-w-[70%] ${
-        isMine ? "bg-indigo-600" : "bg-slate-900 border border-slate-700"
-      }`}>
-        <div className="flex justify-between items-center gap-4">
-          <span className="font-semibold text-indigo-200">{item.username}</span>
-          <span className="text-xs text-slate-300">
-            {new Date(item.timestamp).toLocaleTimeString()}
+          <span
+            className={
+              user === myUsername
+                ? "font-semibold text-indigo-400"
+                : ""
+            }
+          >
+            {user}
           </span>
-        </div>
-        <p className="text-white mt-2">{item.message}</p>
-      </div>
-    </div>
-  );
-})}
+        </li>
+      ))}
+    </ul>
+  </div>
 
-      </div>
+  {/* Messages */}
+  <div className="flex-1 overflow-y-auto p-6 space-y-4">
+
+    {messages.length === 0 && (
+      <p className="text-center text-slate-500 mt-20">
+        No messages yet...
+      </p>
+    )}
+
+    {messages.map((item, index) => {
+      if (item.type === "system") {
+        return (
+          <div
+            key={index}
+            className="text-center text-slate-500 text-sm italic"
+          >
+            {item.text}
+          </div>
+        );
+      }
+
+      const isMine = item.username === myUsername;
+
+      return (
+        <div
+          key={index}
+          className={`flex ${
+            isMine ? "justify-end" : "justify-start"
+          }`}
+        >
+          <div
+            className={`rounded-xl p-4 max-w-[70%] ${
+              isMine
+                ? "bg-indigo-600"
+                : "bg-slate-900 border border-slate-700"
+            }`}
+          >
+            <div className="flex justify-between items-center gap-4">
+              <span className="font-semibold text-indigo-200">
+                {item.username}
+              </span>
+
+              <span className="text-xs text-slate-300">
+                {new Date(item.timestamp).toLocaleTimeString()}
+              </span>
+            </div>
+
+            <p className="text-white mt-2">
+              {item.message}
+            </p>
+          </div>
+        </div>
+      );
+    })}
+
+  </div>
+
+</div>
 
       <div className="border-t border-slate-800 p-4 flex gap-3">
 
