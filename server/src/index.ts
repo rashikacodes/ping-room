@@ -106,6 +106,14 @@ io.on("connection", (socket) => {
       io.to(roomCode).emit("receive-message", payload);
   
   });
+  socket.on("get-room-info", ({ roomCode }: { roomCode: string }) => {
+  roomCode = roomCode.trim().toUpperCase();
+  const room = rooms.get(roomCode);
+  if (!room) return;
+
+  const onlineUsers = Array.from(room.users.values());
+  socket.emit("room-info", { onlineUsers });
+});
 
  socket.on("disconnect", () => {
   console.log(`❌ Client disconnected: ${socket.id}`);

@@ -9,7 +9,7 @@ export default function ChatRoom({params,}: {params: Promise<{ roomCode: string 
   const [messages,setMessages]= useState<ChatItem[]>([]);
   const [messageInput, setMessageInput] = useState("");
   const [myUsername, setMyUsername] = useState("");
-  
+  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   useEffect(()=>{
     const handleReceiveMessage = (payload: Message) => {
        setMessages((prev) => [...prev, { ...payload, type: "message" }]);
@@ -31,6 +31,44 @@ export default function ChatRoom({params,}: {params: Promise<{ roomCode: string 
   };
   useEffect(() => {
   setMyUsername(sessionStorage.getItem("username") || "");
+}, []);
+ useEffect(() => {
+  socket.emit("get-room-info", { roomCode });
+
+  const handleRoomInfo = ({ onlineUsers }: { onlineUsers: string[] }) => {
+    setOnlineUsers(onlineUsers);
+  };
+
+  socket.on("room-info", handleRoomInfo);
+
+  return () => {
+    socket.off("room-info", handleRoomInfo);
+  };
+}, [roomCode]);
+  useEffect(() => {
+  const handleUserJoined = ({ username, onlineUsers }: { username: string; onlineUsers: string[] }) => {
+    setOnlineUsers(onlineUsers);
+    setMessages((prev) => [
+      ...prev,
+      { type: "system", text: `${username} joined`, timestamp: Date.now() },
+    ]);
+  };
+ 
+  const handleUserLeft = ({ username, onlineUsers }: { username: string; onlineUsers: string[] }) => {
+    setOnlineUsers(onlineUsers);
+    setMessages((prev) => [
+      ...prev,
+      { type: "system", text: `${username} left`, timestamp: Date.now() },
+    ]);
+  };
+
+  socket.on("user-joined", handleUserJoined);
+  socket.on("user-left", handleUserLeft);
+
+  return () => {
+    socket.off("user-joined", handleUserJoined);
+    socket.off("user-left", handleUserLeft);
+  };
 }, []);
 
   return (
