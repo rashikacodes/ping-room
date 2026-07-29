@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { socket } from "@/lib/socket";
+import ModeToggle from "@/components/home/ModeToggle";
+import UsernameInput from "@/components/home/UsernameInput";
+import RoomCodeInput from "@/components/home/RoomCodeInput";
 
 export default function Home() {
   const router = useRouter();
@@ -82,44 +85,22 @@ export default function Home() {
         <div className="space-y-5">
 
   {/* Mode toggle */}
- <div className="flex rounded-xl overflow-hidden border border-white/20">
-  <button
-    onClick={() => setMode("create")}
-    className={`flex-1 py-2 font-semibold transition ${
-      mode === "create" ? "bg-indigo-600 text-white" : "bg-white/5 text-gray-300"
-    }`}
-  >
-    Create
-  </button>
-  <button
-    onClick={() => setMode("join")}
-    className={`flex-1 py-2 font-semibold transition ${
-      mode === "join" ? "bg-indigo-600 text-white" : "bg-white/5 text-gray-300"
-    }`}
-  >
-    Join
-  </button>
-</div>
+<ModeToggle
+  mode={mode}
+  setMode={setMode}
+/>
 
-  <input
-    type="text"
-    placeholder="Your Name"
-    className="w-full rounded-xl bg-white/10 border border-white/20 p-3 text-white placeholder-gray-400 outline-none focus:border-indigo-400"
-    value={username}
-    onChange={(e) => setUsername(e.target.value)}
-  />
-
+ <UsernameInput
+  username={username}
+  setUsername={setUsername}
+/>
   {/* Room code only shows in Join mode */}
   {mode === "join" && (
-    <input
-      type="text"
-      placeholder="Room Code"
-      className="w-full rounded-xl bg-white/10 border border-white/20 p-3 uppercase text-white placeholder-gray-400 outline-none focus:border-indigo-400"
-      value={roomCode}
-      onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-    />
-  )}
-
+  <RoomCodeInput
+    roomCode={roomCode}
+    setRoomCode={setRoomCode}
+  />
+)}
   {error && (
     <p className="text-red-400 text-sm text-center">
       {error}
