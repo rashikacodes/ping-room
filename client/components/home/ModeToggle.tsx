@@ -8,28 +8,30 @@ export default function ModeToggle({
   setMode,
 }: ModeToggleProps) {
   return (
-    <div className="flex rounded-xl overflow-hidden border border-white/20">
+    <div className="relative flex rounded-2xl bg-white/5 p-1 border border-white/10">
+
       <button
         onClick={() => setMode("create")}
-        className={`flex-1 py-2 font-semibold transition ${
+        className={`relative flex-1 rounded-xl py-3 text-sm font-semibold transition-all duration-300 ${
           mode === "create"
-            ? "bg-indigo-600 text-white"
-            : "bg-white/5 text-gray-300"
+            ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-purple-600/30"
+            : "text-slate-400 hover:text-white"
         }`}
       >
-        Create
+        ✨ Create
       </button>
 
       <button
         onClick={() => setMode("join")}
-        className={`flex-1 py-2 font-semibold transition ${
+        className={`relative flex-1 rounded-xl py-3 text-sm font-semibold transition-all duration-300 ${
           mode === "join"
-            ? "bg-indigo-600 text-white"
-            : "bg-white/5 text-gray-300"
+            ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-purple-600/30"
+            : "text-slate-400 hover:text-white"
         }`}
       >
-        Join
+        🚪 Join
       </button>
+
     </div>
   );
 }

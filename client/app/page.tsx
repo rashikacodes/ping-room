@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { socket } from "@/lib/socket";
-import ModeToggle from "@/components/home/ModeToggle";
-import UsernameInput from "@/components/home/UsernameInput";
-import RoomCodeInput from "@/components/home/RoomCodeInput";
-import ActionButton from "@/components/home/ActionButton";
 import HomeCard from "@/components/home/HomeCard";
+import Hero from "@/components/home/Hero";
+import ChatPreview from "@/components/home/ChatPreview";
 
 export default function Home() {
   const router = useRouter();
@@ -72,9 +70,10 @@ export default function Home() {
     });
   };
 
-  return (
-    <main className="min-h-screen bg-linear-to-br from-slate-900 via-indigo-900 to-slate-950 flex items-center justify-center px-6">
-     <HomeCard
+return (
+  <>
+    <Hero>
+      <HomeCard
         mode={mode}
         setMode={setMode}
         username={username}
@@ -86,8 +85,9 @@ export default function Home() {
           mode === "create"
             ? handleCreateRoom
             : handleJoinRoom
-  }
-/>
-    </main>
-  );
+        }
+      />
+    </Hero>
+  </>
+);
 }
