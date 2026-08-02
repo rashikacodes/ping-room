@@ -24,7 +24,14 @@ export default function ChatRoom({params,}: {params: Promise<{ roomCode: string 
     setMessageInput("");
   };
   return (
-    <main className="min-h-screen bg-slate-950 flex flex-col">
+  <main className="relative h-screen overflow-hidden bg-[#0B0A17] flex flex-col">
+    <div className="absolute inset-0 -z-10 overflow-hidden">
+
+  <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-purple-600/20 blur-[140px]" />
+
+  <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-pink-500/15 blur-[140px]" />
+
+</div>
       <ChatHeader roomCode={roomCode} />
       <div className="flex flex-1 overflow-hidden">
 
