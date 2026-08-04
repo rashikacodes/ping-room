@@ -14,13 +14,14 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-     origin: 
-    
-      "https://ping-room-lac.vercel.app/",
+    origin: [
+      "http://localhost:3000",
+      "https://ping-room-lac.vercel.app",
+    ],
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
-
 // Register all Socket.IO events
 registerSocketHandlers(io);
 
