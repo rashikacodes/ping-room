@@ -14,7 +14,10 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+     origin: [
+      "http://localhost:3000",
+      "https://ping-room-lac.vercel.app/",
+    ],
     methods: ["GET", "POST"],
   },
 });
@@ -22,8 +25,8 @@ const io = new Server(httpServer, {
 // Register all Socket.IO events
 registerSocketHandlers(io);
 
-const PORT = process.env.PORT || 4000;
+const PORT =  process.env.PORT ||4000;
 
 httpServer.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Socket.IO server running on http://localhost:${PORT}`);
 });
