@@ -22,8 +22,8 @@ const io = new Server(httpServer, {
 // Register all Socket.IO events
 registerSocketHandlers(io);
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 httpServer.listen(PORT, () => {
-  console.log(`🚀 Socket.IO server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
