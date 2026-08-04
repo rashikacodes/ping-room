@@ -24,6 +24,7 @@ export function registerSocketHandlers(io: Server) {
     // ---------------- CREATE ROOM ----------------
 
     socket.on("create-room", ({ username }: CreateRoomPayload) => {
+      console.log("CREATE ROOM EVENT RECEIVED:", username);
       const roomCode = createRoom(username, socket.id);
 
       socket.join(roomCode);

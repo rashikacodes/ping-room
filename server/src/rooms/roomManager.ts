@@ -24,7 +24,9 @@ export function createRoom(username: string, socketId: string): string {
   return roomCode;
 }
 
-export function getRoom(roomCode: string): RoomData | undefined {
+export function getRoom(roomCode?: string): RoomData | undefined {
+  if (!roomCode) return undefined;
+
   return rooms.get(roomCode.trim().toUpperCase());
 }
 
@@ -55,6 +57,8 @@ export function isRoomEmpty(roomCode: string): boolean {
   return !room || room.users.size === 0;
 }
 
-export function deleteRoom(roomCode: string): void {
+export function deleteRoom(roomCode?: string): void {
+  if (!roomCode) return;
+
   rooms.delete(roomCode.trim().toUpperCase());
 }
