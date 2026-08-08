@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useParams } from "next/navigation";
 import Sidebar from "@/components/chat/Sidebar";
 import ChatHeader from "@/components/chat/ChatHeader";
 import MessageList from "@/components/chat/MessageList";
@@ -8,13 +9,8 @@ import useUsername from "@/hooks/useUsername";
 import useChat from "@/hooks/useChat";
 
 export default function ChatRoom() {
-  const [roomCode, setRoomCode] = useState("");
-
-  useEffect(() => {
-    const segments = window.location.pathname.split("/");
-    const code = segments[segments.length - 1];
-    setRoomCode(code);
-  }, []);
+  const params = useParams<{ roomCode: string }>();
+  const roomCode = params.roomCode;
 
   const [messageInput, setMessageInput] = useState("");
   const myUsername = useUsername();
