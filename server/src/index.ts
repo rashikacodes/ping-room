@@ -16,7 +16,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: [
       "http://localhost:3000",
-      "https://ping-room-lac.vercel.app",
+      "https://ping-room-ntlz.vercel.app",
     ],
     methods: ["GET", "POST"],
     credentials: true,
